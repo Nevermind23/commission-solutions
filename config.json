@@ -13,5 +13,6 @@
       "private": 0.3,
       "business": 0.5
     }
-  }
+  },
+  "commission_free_amount": 1000
 }

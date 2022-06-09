@@ -34,18 +34,22 @@ class Commission
                     $amount = $amount / $this->config->rates->{$currency};
                 }
 
+                // Storing withdrawals with same user_id and made in same week in a single array
                 $users[$item[1]][$week][] = $amount;
 
                 if (count($users[$item[1]][$week]) <= 3) {
                     $totalWithdrawn = array_sum($users[$item[1]][$week]);
-                    if ($totalWithdrawn <= 1000) {
+                    if ($totalWithdrawn <= $this->config->commission_free_amount) {
+                        $amountToCharge = 0.00;
                         $commission = 0.00;
                     } else {
-                        // Checking if totalWithdrawn - 1000 < currentWithdrawal, if so, we subtract 1000 then
-                        // check if it needs currency conversion and assign appropriate value to the $changeableAmount
-                        if ($totalWithdrawn - 1000 < $item[4]) {
-                            $chargeableAmount = $totalWithdrawn - 1000;
+                        // Checking if totalWithdrawn - commission_free_amount < currentWithdrawal,
+                        // if so, we subtract commission_free_amount then check if it needs currency
+                        // conversion and assign appropriate value to the $changeableAmount
+                        if ($totalWithdrawn - $this->config->commission_free_amount < $item[4]) {
+                            $chargeableAmount = $totalWithdrawn - $this->config->commission_free_amount;
 
+                            // If currency is different, we are converting it back to original
                             if ($currency !== $this->config->currency) {
                                 $chargeableAmount = $chargeableAmount * $this->config->rates->{$currency};
                             }
