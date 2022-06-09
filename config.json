@@ -1,0 +1,17 @@
+{
+  "currency": "eur",
+  "rates": {
+    "usd": 1.1497,
+    "jpy": 129.53
+  },
+  "commissions": {
+    "deposit": {
+      "private": 0.03,
+      "business": 0.03
+    },
+    "withdraw": {
+      "private": 0.3,
+      "business": 0.5
+    }
+  }
+}
